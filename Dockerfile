@@ -33,7 +33,8 @@ RUN dpkg --add-architecture i386 && \
     cabextract \
     libwine \
     libwine:i386 \
-    unzip && \
+    unzip \
+    x11vnc && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a group and user with the specified GID and UID if they do not exist
