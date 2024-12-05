@@ -14,6 +14,7 @@
 
 # Run Docker container
 docker run -d --name "miscreated-server" \
+    -p 5900:5900/tcp \
     -p 64090:64090/udp \
     -p 64091:64091/udp \
     -p 64092:64092/udp \
