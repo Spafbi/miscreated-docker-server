@@ -67,6 +67,7 @@ ensure_file_exists ${HOSTDIR}/banned.xml
 ensure_file_exists ${HOSTDIR}/hosting.cfg
 ensure_file_exists ${HOSTDIR}/reservations.xml
 ensure_file_exists ${HOSTDIR}/whitelist.xml
+ensure_file_exists ${HOSTDIR}/miscreated.db
 
 ouput_long_text -e "\e[4;94mThis server will use the following ports:\e[0m"
 ouput_long_text -e "\e[33m${VNC_PORT}/tcp\e[0m - VNC port (firewall ports should only be opened if you want to make VNC accessible externally, otherwise use direct LAN connections or SSH port tunneling)"
