@@ -261,7 +261,7 @@ function update_all_abandon_timers {
       echo "Invalid argument. Please specify 'bases', 'tents', or 'vehicles'."
       ;;
   esac
-  if $sql != ""; then
+  if [[ -n "$sql" ]]; then
     sqlite3 /app/miscreated.db "$sql"
   fi
 }
@@ -309,7 +309,7 @@ function update_preserved_abandon_timers {
     done
   fi
 
-  if sql != ""; then
+  if [[ -n "$sql" ]]; then
     sqlite3 /app/miscreated.db "$sql"
   fi
 }
