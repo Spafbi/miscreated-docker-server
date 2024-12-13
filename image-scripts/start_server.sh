@@ -321,18 +321,31 @@ sleep 5
 while [ ! -f /data/stop ]; do
   cd /app
   # Set defaults for new servers
+  echo "set_default_http_password"
   set_default_http_password; # Set default RCON password if http_password config value does not exist
+  echo "set_default_sv_servername"
   set_default_sv_servername; # Set default server name if sv_servername config value does not exist
+  echo "set_default_sv_maxuptime"
   set_default_sv_maxuptime; # Set default max uptime if sv_maxuptime config value does not exist
+  echo "set_default_sv_maxplayers"
   set_default_sv_maxplayers; # Set default max players if sv_maxplayers config value does not exist
+  echo "set_default_map"
   set_default_map; # Set default map if map config value does not exist. Default to islands.
+  echo "enable_vnc"
   enable_vnc; # Enable VNC if enable_vnc config value exists and is true
+  echo "grant_all_guides"
   grant_all_guides; # Conditionally grant guides to all players if grant_guides config value exists. Config grant_guides value must be true.
+  echo "update_all_abandon_timers bases"
   update_all_abandon_timers bases; # Extend abandon timer to 2419200 (seconds) for all bases if reset_all_bases config value exists and is true
+  echo "update_all_abandon_timers tents"
   update_all_abandon_timers tents; # Extend abandon timer to 2419200 (seconds) for all tents if reset_all_tents config value exists and is true
+  echo "update_all_abandon_timers vehicles"
   update_all_abandon_timers vehicles; # Extend abandon timer to 2419200 (seconds) for all vehicles if reset_all_vehicles config value exists and is true
+  echo "update_all_abandon_timers despawn_vehicles"
   update_all_abandon_timers despawn_vehicles # Set vehicle despawn timer if despawn_vehicles config value exists and is a positive integer (seconds)
+  echo "update_preserved_abandon_timers"
   update_preserved_abandon_timers; # Extend abandon timer to 2419200 (seconds) for all bases, tents, and vehicles within 30m of a preservation plot sign if preserve_bases, preserve_tents, or preserve_vehicles config values exist and are true 
+  echo "randomized_uptime"
   randomized_uptime; # Randomize the server uptime if randomized_uptime config value exists and is true. This helps prevent server restarts from being predictable.
   MAXPLAYERS=$(get_maxplayers) # Get the sv_maxplayers number from the config file
   MAP=$(get_map) # Get the map from the config file

@@ -121,6 +121,8 @@ docker logs miscreated-server|less
 # `hosting.cfg` Variables
 The following variables used in the `start_server.sh` script can be set in the server's `hosting.cfg` file.
 
+**NOTE:** Variables that accept `yes/no` as options will accept `yes`, `y`, `1`, or `true` as valid `yes` values.
+
 ## Standard Variables
 These variables are standard for the Miscreated server. If not defined, they will use their default values.
 - `http_password`: RCON password for the server. (default: randomly generated)
