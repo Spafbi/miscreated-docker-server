@@ -92,6 +92,7 @@ docker run -d --name "${CONTAINER_NAME}" \
     -v "${HOSTDIR}/logs:/app/logs" \
     -v "${HOSTDIR}/banned.xml:/app/banned.xml" \
     -v "${HOSTDIR}/hosting.cfg:/app/hosting.cfg" \
+    -v "${HOSTDIR}/miscreated.db:/app/miscreated.db" \
     -v "${HOSTDIR}/reservations.xml:/app/reservations.xml" \
     -v "${HOSTDIR}/whitelist.xml:/app/whitelist.xml" \
     miscreated-server
