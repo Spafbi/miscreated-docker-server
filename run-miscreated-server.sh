@@ -75,7 +75,7 @@ ouput_long_text -e "\e[33m$((GAME_PORT + 1))/udp\e[0m - Game server port for Ste
 ouput_long_text -e "\e[33m$((GAME_PORT + 2))/udp\e[0m - Game server port for server info"
 ouput_long_text -e "\e[33m$((GAME_PORT + 3))/udp\e[0m - Game server port for VoIP"
 ouput_long_text -e "\e[33m$((GAME_PORT + 4))/tcp\e[0m - Game server port for RCON (firewall ports should only be opened if you want to make this accessible externally, otherwise use direct LAN connections or SSH port tunneling)"
-ouput_long_text "At a minimum, open the UDP ports to make the server available to players outside of your network. This means configuring your firewall to allow incoming traffic on the UDP ports (${GAME_PORT}), ($((GAME_PORT + 1)), $((GAME_PORT + 2)), $((GAME_PORT + 3)))."
+ouput_long_text "At a minimum, open the UDP ports to make the server available to players outside of your network. This means configuring your firewall to allow incoming traffic on the UDP ports (${GAME_PORT}, $((GAME_PORT + 1)), $((GAME_PORT + 2)), $((GAME_PORT + 3)))."
 
 # Run Docker container
 docker run -d --name "${CONTAINER_NAME}" \

@@ -192,7 +192,7 @@ function set_default_sv_servername {
   local server_name=$(get_config_value "sv_servername")
   if [ -z "$server_name" ]; then
     local epoch_time=$(date +%s)
-    local md5_hash=$(echo -n "$epoch_time" | md5sum | awk '{print $1}')
+    local md5_hash=$(echo -n "$epoch_time" | md5sum | awk '{print substr($1, 1, 8)}')
     server_name="Miscreated Server ${md5_hash}"
     set_config_value "sv_servername" "$server_name"
   fi
