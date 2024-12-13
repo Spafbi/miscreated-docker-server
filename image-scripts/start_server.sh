@@ -222,6 +222,10 @@ function update_all_abandon_timers {
     echo "Database not found. Abandon timers will not be updated."
     return
   fi
+  if [ "$(sqlite3 /app/miscreated.db ".tables" | wc -l)" -eq 0 ]; then
+    echo "The database is currently empty. Abandon timers will not be updated."
+    return
+  fi
   local sql=""
   case "$1" in
     bases)
@@ -257,7 +261,7 @@ function update_all_abandon_timers {
       echo "Invalid argument. Please specify 'bases', 'tents', or 'vehicles'."
       ;;
   esac
-  if sql != ""; then
+  if $sql != ""; then
     sqlite3 /app/miscreated.db "$sql"
   fi
 }
@@ -266,6 +270,10 @@ function update_all_abandon_timers {
 function update_preserved_abandon_timers {
   if [ ! -f /app/miscreated.db ]; then
     echo "Database not found. Abandon timers will not be updated."
+    return
+  fi
+  if [ "$(sqlite3 /app/miscreated.db ".tables" | wc -l)" -eq 0 ]; then
+    echo "The database is currently empty. Abandon timers will not be updated."
     return
   fi
   local sql=""
