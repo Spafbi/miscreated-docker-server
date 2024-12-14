@@ -1,7 +1,4 @@
 #!/bin/bash
-set -x
-CONFIG_FILE=/app/hosting.cfg
-
 # Function to check if a value is a boolean true equivalent
 function bool_check {
   local value=$(echo "$1" | tr '[:upper:]' '[:lower:]')
@@ -20,6 +17,45 @@ function calc_distance {
   local y2=$4
   local dist=$(echo "sqrt(($x2 - $x1)^2 + ($y2 - $y1)^2)" | bc -l)
   echo $dist
+}
+
+# Disables debug logging for the server.
+# This function restores the original log verbosity levels.
+function disable_debug_logging {
+  local saved_log_Verbosity=$(get_config_value "saved_log_Verbosity")
+  local saved_log_WriteToFileVerbosity=$(get_config_value "saved_log_WriteToFileVerbosity")
+  if [ "$saved_log_Verbosity" == "__unset__" ]; then
+    remove_config_value "log_Verbosity"
+  else
+    set_config_value "log_Verbosity" "$saved_log_Verbosity"
+  fi
+  if [ "$saved_log_WriteToFileVerbosity" == "__unset__" ]; then
+    remove_config_value "log_WriteToFileVerbosity"
+  else
+    set_config_value "log_WriteToFileVerbosity" "$saved_log_WriteToFileVerbosity"
+  fi
+  remove_config_value "saved_log_Verbosity"
+  remove_config_value "saved_log_WriteToFileVerbosity"
+}
+
+# Enables debug logging for the server.
+# This function configures the necessary settings to turn on detailed logging,
+# which can be useful for troubleshooting and monitoring server behavior.
+function enable_debug_logging {
+  local log_Verbosity=$(get_config_value "log_Verbosity")
+  local log_WriteToFileVerbosity=$(get_config_value "log_WriteToFileVerbosity")
+  if [ -n "$log_Verbosity" ]; then
+    set_config_value "saved_log_Verbosity" "$log_Verbosity"
+  else
+    set_config_value "saved_log_Verbosity" "__unset__"
+  fi
+  set_config_value "log_Verbosity" 3
+  if [ -n "$log_Verbosity" ]; then
+    set_config_value "saved_log_WriteToFileVerbosity" "$log_WriteToFileVerbosity"
+  else
+    set_config_value "saved_log_WriteToFileVerbosity" "__unset__"
+  fi
+  set_config_value "log_WriteToFileVerbosity" 3
 }
 
 # Function to enable VNC server if configured
@@ -62,7 +98,7 @@ function get_clan_members {
 # Function to get a configuration value from the config file
 function get_config_value {
   local key=$1
-  local value=$(grep -oP "(?<=^${key}=).*" ${CONFIG_FILE})
+  local value=$(grep -i -oP "(?<=^${key}=).*" ${CONFIG_FILE})
   value=$(echo "$value" | sed -E 's/\\#/#/g; s/#.*//')
   echo $value
 }
@@ -70,7 +106,7 @@ function get_config_value {
 # Function to get a configuration value as an array from the config file
 function get_config_value_as_array {
   local key=$1
-  local value=$(grep -oP "(?<=^${key}=).*" ${CONFIG_FILE})
+  local value=$(grep -i -oP "(?<=^${key}=).*" ${CONFIG_FILE})
   value=$(echo "$value" | sed -E 's/\\#/#/g; s/#.*//')
   IFS=';' read -r -a array <<< "$value"
   echo "${array[@]}"
@@ -159,12 +195,18 @@ function randomized_uptime {
   set_config_value "sv_maxuptime" "$random_val"
 }
 
+# Function to remove a configuration value from the config file
+function remove_config_value {
+  local key=$1
+  sed -i "/^${key}=/d" ${CONFIG_FILE}
+}
+
 # Function to set a configuration value in the config file
 function set_config_value {
   local key=$1
   local value=$2
-  if grep -q "^${key}=" ${CONFIG_FILE}; then
-    sed -i "s/^${key}=.*/${key}=${value}/" ${CONFIG_FILE}
+  if grep -qi "^${key}=" ${CONFIG_FILE}; then
+    sed -i "s/^\(${key}\)=.*/\1=${value}/I" ${CONFIG_FILE}
   else
     echo "${key}=${value}" >> ${CONFIG_FILE}
   fi
@@ -315,6 +357,13 @@ function update_preserved_abandon_timers {
   fi
 }
 
+CONFIG_FILE=/app/hosting.cfg
+if [ "$(bool_check "$(get_config_value "debug")")" == 1 ]; then
+  enable_debug_logging
+else
+  disable_debug_logging
+fi
+
 # Update the game server if force_validation config value exists and is true
 if [ "$(bool_check "$(get_config_value "force_validation")")" == 1 ]; then
   /steamcmd/steamcmd.sh +force_install_dir /app +login anonymous +app_update 443030 validate +quit
@@ -346,11 +395,9 @@ while [ ! -f /data/stop ]; do
   MAXPLAYERS=$(get_maxplayers) # Get the sv_maxplayers number from the config file
   MAP=$(get_map) # Get the map from the config file
   WHITELISTED=$(get_whitelisted) # Get the whitelist flag from the config file
-  
-  echo wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers ${MAXPLAYERS} +map ${MAP} +http_startserver ${WHITELISTED}
-  set +x
-  exit 0
-  
+
+  echo "Starting Miscreated server with this command:"  
+  echo "wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers ${MAXPLAYERS} +map ${MAP} +http_startserver ${WHITELISTED}"
   wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers ${MAXPLAYERS} +map ${MAP} +http_startserver ${WHITELISTED} &
   WINE_PID=$!
   while [ ! -f /app/server.log ]; do
