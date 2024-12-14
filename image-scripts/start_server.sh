@@ -76,7 +76,7 @@ function enable_vnc {
 
   ## Start VNC server
   echo "Starting VNC server..."
-  x11vnc -display :0 -forever -passwd $VNC_PASSWORD -listen 0.0.0.0 -xkb -rfbport 5900 &
+  x11vnc -display :0 -forever -passwd $VNC_PASSWORD -listen 0.0.0.0 -no6 -xkb -rfbport 5900 -quiet &
 }
 
 # Function to generate a random password
