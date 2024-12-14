@@ -322,7 +322,7 @@ function update_preserved_abandon_timers {
   local sql=""
   local ids=($(get_preservation_ids))
   local ids_str=$(IFS=,; echo "${ids[*]}")
-  get_preserved_bases_sql = """
+  get_preserved_bases_sql="""
   SELECT (AccountID + 76561197960265728) AS Owner,
     ROUND(PosX,5) AS PosX,
     ROUND(PosY,5) AS PosY
@@ -359,9 +359,10 @@ function update_preserved_abandon_timers {
 
 CONFIG_FILE=/app/hosting.cfg
 if [ "$(bool_check "$(get_config_value "debug")")" == 1 ]; then
-  enable_debug_logging
+  set -x
+  enable_debug_logging;
 else
-  disable_debug_logging
+  disable_debug_logging;
 fi
 
 # Update the game server if force_validation config value exists and is true
