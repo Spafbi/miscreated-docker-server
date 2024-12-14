@@ -2,6 +2,7 @@
 
 # Use the latest Ubuntu Server 22.04 as the base image
 FROM ubuntu:jammy
+ENV CODENAME=jammy
 
 # Set build arguments with default values
 ARG USER=steam
@@ -15,43 +16,41 @@ ENV LD_LIBRARY_PATH="/app"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:0
 
+# Update and install required packages
+RUN apt-get update && \
+    apt-get install -y sudo wget curl gnupg2 unzip lib32gcc-s1 software-properties-common && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install required dependencies
 RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    apt-get install -y --install-recommends \
-    gnupg2 \
-    wget && \
     mkdir -pm755 /etc/apt/keyrings && \
-    wget -O - https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && \
-    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources && \
-    apt-get update && \
-    apt-get install -y --install-recommends \
-    apt-transport-https \
-    cabextract \
-    curl \
-    fonts-wine \
-    libwine \
-    libwine:i386 \
-    software-properties-common \
-    sqlite3 \
-    unzip \
-    winbind \
-    winehq-stable \
-    x11vnc \
-    xvfb && \
-    rm -rf /var/lib/apt/lists/*
+    wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${CODENAME}/winehq-${CODENAME}.sources && \
+    apt update && \
+    ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y --no-install-recommends tzdata && \
+    dpkg-reconfigure --frontend noninteractive tzdata && \
+    echo steam steam/question select "I AGREE" | sudo debconf-set-selections && \
+    echo steam steam/license note '' | sudo debconf-set-selections && \
+    apt install -y --install-recommends winehq-stable steamcmd lib32gcc-s1 x11vnc xvfb && \
+    apt dist-upgrade -y && \
+    apt upgrade -y && \
+    apt autoremove -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/apt/archives/*
 
 # Create a group and user with the specified GID and UID if they do not exist
 RUN if ! getent group $GID; then groupadd -g $GID $USER; fi && \
     if ! id -u $UID >/dev/null 2>&1; then useradd -m -u $UID -g $GID -s /bin/bash $USER; fi
 
-# Install SteamCMD
-RUN mkdir -p /steamcmd && \
-    cd /steamcmd && \
-    wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
-    tar -xvzf steamcmd_linux.tar.gz && \
-    rm steamcmd_linux.tar.gz && \
-    chown -R $UID:$GID /steamcmd
+# # Install SteamCMD
+# RUN mkdir -p /steamcmd && \
+#     cd /steamcmd && \
+#     wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
+#     tar -xvzf steamcmd_linux.tar.gz && \
+#     rm steamcmd_linux.tar.gz && \
+#     chown -R $UID:$GID /steamcmd
 
 # Create server install directory and set ownership and permissions
 RUN mkdir -p /app && \
