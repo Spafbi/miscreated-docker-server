@@ -381,6 +381,7 @@ if [ "$(bool_check "$(get_config_value "force_validation")")" == 1 ]; then
 fi
 
 # Start X virtual framebuffer
+export XDG_RUNTIME_DIR=$(mktemp -d)
 Xvfb :0 -screen 0 1280x1024x16 &
 
 # Wait to ensure Xvfb is up
