@@ -205,11 +205,13 @@ function remove_config_value {
 function set_config_value {
   local key=$1
   local value=$2
+  local temp_dir=$(mktemp -d)
   if grep -qi "^${key}=" ${CONFIG_FILE}; then
-    sed -i "s/^\(${key}\)=.*/\1=${value}/I" ${CONFIG_FILE}
+    sed -i "s/^\(${key}\)=.*/\1=${value}/I" --sandbox=${temp_dir} ${CONFIG_FILE}
   else
     echo "${key}=${value}" >> ${CONFIG_FILE}
   fi
+  rm -rf ${temp_dir}
 }
 
 # Function to set a default HTTP password if not configured
