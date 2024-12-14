@@ -1,7 +1,7 @@
 # Dockerfile to run Conan Exiles server using Wine on Ubuntu
 
-# Use the latest Ubuntu Server as the base image
-FROM ubuntu:latest
+# Use the latest Ubuntu Server 22.04 as the base image
+FROM ubuntu:jammy
 
 # Set build arguments with default values
 ARG USER=steam
@@ -17,24 +17,26 @@ ENV DISPLAY=:0
 
 # Install required dependencies
 RUN dpkg --add-architecture i386 && \
+    mkdir -pm755 /etc/apt/keyrings && \
+    wget -O - https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources && \
     apt-get update && \
-    apt-get install -y \
-    wget \
-    curl \
-    software-properties-common \
+    apt-get install -y --install-recommends \
     apt-transport-https \
-    gnupg2 \
-    playonlinux \
-    sqlite3 \
-    xvfb \
-    wine64 \
-    wine32 \
-    winbind \
     cabextract \
+    curl \
+    fonts-wine \
+    gnupg2 \
     libwine \
     libwine:i386 \
+    software-properties-common \
+    sqlite3 \
     unzip \
-    x11vnc && \
+    wget \
+    winbind \
+    winehq-stable \
+    x11vnc \
+    xvfb && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a group and user with the specified GID and UID if they do not exist
