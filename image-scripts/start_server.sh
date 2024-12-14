@@ -377,10 +377,12 @@ fi
 
 # Update the game server if force_validation config value exists and is true
 if [ "$(bool_check "$(get_config_value "force_validation")")" == 1 ]; then
-  /steamcmd/steamcmd.sh +force_install_dir /app +login anonymous +app_update 443030 validate +quit
+  # /steamcmd/steamcmd.sh +force_install_dir /app +login anonymous +app_update 443030 validate +quit
+  steamcmd +force_install_dir /app +login anonymous +app_update 443030 validate +quit
 fi
 
 # Start X virtual framebuffer
+export WINEDLLOVERRIDES="mscoree,mshtml="
 export XDG_RUNTIME_DIR=$(mktemp -d)
 Xvfb :0 -screen 0 1280x1024x16 &
 

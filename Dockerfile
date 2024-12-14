@@ -59,7 +59,10 @@ RUN mkdir -p /app && \
 
 # Install the server files
 USER $USER
-RUN /steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
+ENV WINEDLLOVERRIDES="mscoree,mshtml="
+RUN xvfb-run wineboot -u && \
+    steamcmd +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
+# RUN /steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
 USER root
 
 # Copy the entrypoint script into the container
