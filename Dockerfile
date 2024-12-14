@@ -17,6 +17,10 @@ ENV DISPLAY=:0
 
 # Install required dependencies
 RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install -y --install-recommends \
+    gnupg2 \
+    wget && \
     mkdir -pm755 /etc/apt/keyrings && \
     wget -O - https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && \
     wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources && \
@@ -26,13 +30,11 @@ RUN dpkg --add-architecture i386 && \
     cabextract \
     curl \
     fonts-wine \
-    gnupg2 \
     libwine \
     libwine:i386 \
     software-properties-common \
     sqlite3 \
     unzip \
-    wget \
     winbind \
     winehq-stable \
     x11vnc \
