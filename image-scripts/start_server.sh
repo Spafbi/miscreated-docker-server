@@ -200,7 +200,7 @@ function remove_config_value {
   local key=$1
   local temp_file=$(mktemp)
   sed "/^${key}=/Id" ${CONFIG_FILE} > ${temp_file}
-  mv ${temp_file} ${CONFIG_FILE}
+  cat ${temp_file} > ${CONFIG_FILE}
   rm -f ${temp_file}
 }
 
@@ -211,7 +211,7 @@ function set_config_value {
   local temp_file=$(mktemp)
   if grep -qi "^${key}=" ${CONFIG_FILE}; then
     sed "s/^\(${key}\)=.*/\1=${value}/I" ${CONFIG_FILE} > ${temp_file}
-    mv ${temp_file} ${CONFIG_FILE}
+    cat ${temp_file} > ${CONFIG_FILE}
   else
     echo "${key}=${value}" >> ${CONFIG_FILE}
   fi
