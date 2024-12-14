@@ -69,6 +69,10 @@ WORKDIR /app
 # Expose the game server ports
 EXPOSE 5900/tcp 64090/udp 64091/udp 64092/udp 64093/udp 64094/tcp
 
+# Create the /tmp/.X11-unix directory and set permissions
+RUN mkdir -p /tmp/.X11-unix && \
+    chmod 1777 /tmp/.X11-unix
+
 # Switches the current user to the one specified by the $USER environment variable
 USER $USER
 
