@@ -44,16 +44,20 @@ function disable_debug_logging {
 function enable_debug_logging {
   local log_Verbosity=$(get_config_value "log_Verbosity")
   local log_WriteToFileVerbosity=$(get_config_value "log_WriteToFileVerbosity")
-  if [ -n "$log_Verbosity" ]; then
-    set_config_value "saved_log_Verbosity" "$log_Verbosity"
-  else
-    set_config_value "saved_log_Verbosity" "__unset__"
+  if [ -z "$(get_config_value "saved_log_Verbosity")" ]; then
+    if [ -n "$log_Verbosity" ]; then
+      set_config_value "saved_log_Verbosity" "$log_Verbosity"
+    else
+      set_config_value "saved_log_Verbosity" "__unset__"
+    fi
   fi
   set_config_value "log_Verbosity" 3
-  if [ -n "$log_Verbosity" ]; then
-    set_config_value "saved_log_WriteToFileVerbosity" "$log_WriteToFileVerbosity"
-  else
-    set_config_value "saved_log_WriteToFileVerbosity" "__unset__"
+  if [ -z "$(get_config_value "saved_log_WriteToFileVerbosity")" ]; then
+    if [ -n "$log_WriteToFileVerbosity" ]; then
+      set_config_value "saved_log_WriteToFileVerbosity" "$log_WriteToFileVerbosity"
+    else
+      set_config_value "saved_log_WriteToFileVerbosity" "__unset__"
+    fi
   fi
   set_config_value "log_WriteToFileVerbosity" 3
 }
