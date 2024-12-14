@@ -198,20 +198,24 @@ function randomized_uptime {
 # Function to remove a configuration value from the config file
 function remove_config_value {
   local key=$1
-  sed -i "/^${key}=/d" ${CONFIG_FILE}
+  local temp_file=$(mktemp)
+  sed "/^${key}=/Id" ${CONFIG_FILE} > ${temp_file}
+  mv ${temp_file} ${CONFIG_FILE}
+  rm -f ${temp_file}
 }
 
 # Function to set a configuration value in the config file
 function set_config_value {
   local key=$1
   local value=$2
-  local temp_dir=$(mktemp -d)
+  local temp_file=$(mktemp)
   if grep -qi "^${key}=" ${CONFIG_FILE}; then
-    sed -i "s/^\(${key}\)=.*/\1=${value}/I" --sandbox=${temp_dir} ${CONFIG_FILE}
+    sed "s/^\(${key}\)=.*/\1=${value}/I" ${CONFIG_FILE} > ${temp_file}
+    mv ${temp_file} ${CONFIG_FILE}
   else
     echo "${key}=${value}" >> ${CONFIG_FILE}
   fi
-  rm -rf ${temp_dir}
+  rm -f ${temp_file}
 }
 
 # Function to set a default HTTP password if not configured
