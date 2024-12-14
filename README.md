@@ -178,6 +178,7 @@ Some servers may need to maintain specific bases, tents, or vehicles for events 
 ## Debug Variables
 - `debug`: Enable debug logging
 
-### Do Not Edit or Remove These Debug Variables
+### Log Verbosity Settings
+These variables restore the log verbosity settings when the debug option is turned off. They should not be manually edited or removed.
 - `saved_log_Verbosity`
 - `saved_log_WriteToFileVerbosity`
