@@ -412,7 +412,7 @@ while [ ! -f /data/stop ]; do
 
   echo "Starting Miscreated server with this command:"  
   echo "wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers ${MAXPLAYERS} +map ${MAP} +http_startserver ${WHITELISTED}"
-  wine64 Bin64_dedicated/MiscreatedServer.exe -sv_port 64090 +sv_maxplayers ${MAXPLAYERS} +map ${MAP} +http_startserver ${WHITELISTED} &
+  wine64 Bin64_dedicated/MiscreatedServer.exe -sv_bind 0.0.0.0 -sv_port 64090 +sv_maxplayers ${MAXPLAYERS} +map ${MAP} +http_startserver ${WHITELISTED} &
   WINE_PID=$!
   while [ ! -f /app/server.log ]; do
     sleep 1

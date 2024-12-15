@@ -55,7 +55,7 @@ RUN if ! getent group $GID; then groupadd -g $GID $USER; fi && \
 # Create server install directory and set ownership and permissions
 RUN mkdir -p /app && \
     chown -R $UID:$GID /app && \
-    chmod -R 755 /app
+    chmod -R 775 /app
 
 # Install the server files
 USER $USER
