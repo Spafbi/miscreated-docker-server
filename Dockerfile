@@ -61,7 +61,7 @@ RUN mkdir -p /app && \
 USER $USER
 ENV WINEDLLOVERRIDES="mscoree,mshtml="
 RUN xvfb-run wineboot -u
-RUN steamcmd +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
+RUN /usr/games/steamcmd +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
 # RUN /steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
 USER root
 
