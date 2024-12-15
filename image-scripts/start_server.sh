@@ -367,7 +367,7 @@ function update_preserved_abandon_timers {
   fi
 }
 
-CONFIG_FILE=/app/hosting.cfg
+CONFIG_FILE=/app/docker.cfg
 if [ "$(bool_check "$(get_config_value "debug")")" == 1 ]; then
   set -x
   enable_debug_logging;

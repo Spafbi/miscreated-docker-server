@@ -64,10 +64,11 @@ create_directory ${HOSTDIR}/logs
 
 # Ensure files exist with sudo
 ensure_file_exists ${HOSTDIR}/banned.xml
+ensure_file_exists ${HOSTDIR}/docker.cfg
 ensure_file_exists ${HOSTDIR}/hosting.cfg
+ensure_file_exists ${HOSTDIR}/miscreated.db
 ensure_file_exists ${HOSTDIR}/reservations.xml
 ensure_file_exists ${HOSTDIR}/whitelist.xml
-ensure_file_exists ${HOSTDIR}/miscreated.db
 
 ouput_long_text -e "\e[4;94mThis server will use the following ports:\e[0m"
 ouput_long_text -e "\e[33m${VNC_PORT}/tcp\e[0m - VNC port (firewall ports should only be opened if you want to make VNC accessible externally, otherwise use direct LAN connections or SSH port tunneling)"
@@ -91,6 +92,7 @@ docker run -d --name "${CONTAINER_NAME}" \
     -v "${HOSTDIR}/logbackups:/logbackups" \
     -v "${HOSTDIR}/logs:/app/logs" \
     -v "${HOSTDIR}/banned.xml:/app/banned.xml" \
+    -v "${HOSTDIR}/docker.cfg:/app/docker.cfg" \
     -v "${HOSTDIR}/hosting.cfg:/app/hosting.cfg" \
     -v "${HOSTDIR}/miscreated.db:/app/miscreated.db" \
     -v "${HOSTDIR}/reservations.xml:/app/reservations.xml" \
