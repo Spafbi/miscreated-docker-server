@@ -7,7 +7,7 @@ Xvfb :0 -screen 0 1280x1024x16 &
 echo "Starting VNC server..."
 x11vnc -display :0 -forever -passwd nopass01 -no6 -xkb -rfbport 5900 -quiet &
 while true; do
-xvfb-run wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers 50 +map islands +http_startserver
+wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers 50 +map islands +http_startserver
 WINE_PID=$!
   while [ ! -f /app/server.log ]; do
     sleep 1
