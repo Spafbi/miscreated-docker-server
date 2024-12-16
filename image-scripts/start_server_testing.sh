@@ -5,7 +5,7 @@ export XDG_RUNTIME_DIR=$(mktemp -d)
 Xvfb :0 -screen 0 1280x1024x16 &
 ## Start VNC server
 echo "Starting VNC server..."
-x11vnc -display :0 -forever -passwd pcKoyxaA5wYguW3r -listen 0.0.0.0 -no6 -xkb -rfbport 5900 -quiet &
+x11vnc -display :0 -forever -passwd nopass01 -no6 -xkb -rfbport 5900 -quiet &
 while true; do
 wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers 50 +map islands +http_startserver
 WINE_PID=$!
