@@ -67,6 +67,11 @@ RUN xvfb-run wineboot -u
 RUN /steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
 USER root
 
+# Create the /tmp/.X11-unix directory and set permissions
+RUN mkdir -p /tmp/.X11-unix && \
+    chown root:root /tmp/.X11-unix && \
+    chmod 1777 /tmp/.X11-unix
+
 # Copy the entrypoint script into the container
 COPY image-scripts/start_server_testing.sh /start_server.sh
 RUN chmod +x /start_server.sh
@@ -76,11 +81,6 @@ WORKDIR /app
 
 # Expose the game server ports
 EXPOSE 5900/tcp 64090/udp 64091/udp 64092/udp 64093/udp 64094/tcp
-
-# Create the /tmp/.X11-unix directory and set permissions
-RUN mkdir -p /tmp/.X11-unix && \
-    chown root:root /tmp/.X11-unix && \
-    chmod 1777 /tmp/.X11-unix
 
 # Switches the current user to the one specified by the $USER environment variable
 USER $USER
