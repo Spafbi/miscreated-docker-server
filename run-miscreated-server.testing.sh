@@ -89,4 +89,4 @@
 #     -v "${HOSTDIR}/whitelist.xml:/app/whitelist.xml" \
 #     miscreated-server
 
-docker run -d --name miscreated-server -p 5900:5900/tcp -p 64090:64090/udp -p 64091:64091/udp -p 64092:64092/udp -p 64093:64093/udp
+docker run -d --name miscreated-server -p 5900:5900/tcp -p 64090:64090/udp -p 64091:64091/udp -p 64092:64092/udp -p 64093:64093/udp miscreated-server
