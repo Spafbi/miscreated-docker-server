@@ -1,4 +1,4 @@
-# Dockerfile to run Conan Exiles server using Wine on Ubuntu
+# Dockerfile to run a Miscreated server using Wine on Ubuntu
 
 # Use the latest Ubuntu Server 22.04 as the base image
 FROM ubuntu:jammy
