@@ -7,7 +7,7 @@ while true; do
   export XDG_RUNTIME_DIR=$(mktemp -d)
   # /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /usr/bin/x11vnc -forever -passwd nopass01 -create
   export DISPLAY=:0
-  /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /etc/init.d/xrdp start
+  sudo /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /etc/init.d/xrdp start
   XVFB_PID=$!
   # /etc/init.d/xrdp start
   # XRDP_PID=$!
@@ -20,6 +20,8 @@ while true; do
   TAIL_PID=$!
   wait $WINE_PID
   kill $TAIL_PID $XRDP_PID
+  # Clean up the temporary directory
+  rm -rf $XDG_RUNTIME_DIR
   # kill $TAIL_PID $XVFB_PID $XRDP_PID
   sleep 10
 done
