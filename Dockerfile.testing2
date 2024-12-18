@@ -101,16 +101,13 @@ RUN mkdir -p /tmp/.X11-unix && \
 
 # Create /etc/xrdp/xrdp.ini file with the required entries
 RUN mkdir -p /etc/xrdp && \
-    echo "[Globals]" > /etc/xrdp/xrdp.ini && \
-    echo "address=0.0.0.0" >> /etc/xrdp/xrdp.ini && \
-    echo "port=3389" >> /etc/xrdp/xrdp.ini && \
-    echo "[xrdp1]" >> /etc/xrdp/xrdp.ini && \
-    echo "name=Session1" >> /etc/xrdp/xrdp.ini && \
-    echo "lib=libxup.so" >> /etc/xrdp/xrdp.ini && \
-    echo "username=ask" >> /etc/xrdp/xrdp.ini && \
+    echo "[xrdp1]" > /etc/xrdp/xrdp.ini && \
+    echo "name=Active Local Login" >> /etc/xrdp/xrdp.ini && \
+    echo "lib=libvnc.so" >> /etc/xrdp/xrdp.ini && \
+    echo "username=" >> /etc/xrdp/xrdp.ini && \
     echo "password=ask" >> /etc/xrdp/xrdp.ini && \
-    echo "ip=0.0.0.0" >> /etc/xrdp/xrdp.ini && \
-    echo "port=-1" >> /etc/xrdp/xrdp.ini && \
+    echo "ip=127.0.0.1" >> /etc/xrdp/xrdp.ini && \
+    echo "port=3389" >> /etc/xrdp/xrdp.ini && \
     chown -R steam:steam /etc/xrdp && \
     chmod 775 /etc/xrdp/xrdp.ini && \
     chmod 664 /etc/xrdp/xrdp.ini

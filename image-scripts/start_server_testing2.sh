@@ -8,17 +8,17 @@ while true; do
   export DISPLAY=:0
   export XAUTHORITY=/home/steam/.Xauthority
   export RDP_PASSWORD=${RDP_PASSWORD:-nopass01}
-  export RDP_USERNAME=${RDP_USERNAME:-steam}
+  # export RDP_USERNAME=${RDP_USERNAME:-steam}
 
   # Set XRDP credentials
   TEMP_FILE=$(mktemp)
   sed "s/password=ask/password=${RDP_PASSWORD}/" /etc/xrdp/xrdp.ini > $TEMP_FILE
   mv $TEMP_FILE /etc/xrdp/xrdp.ini
   rm -f $TEMP_FILE
-  TEMP_FILE=$(mktemp)
-  sed "s/username=ask/username=${RDP_USERNAME}/" /etc/xrdp/xrdp.ini > $TEMP_FILE
-  mv $TEMP_FILE /etc/xrdp/xrdp.ini
-  rm -f $TEMP_FILE
+  # TEMP_FILE=$(mktemp)
+  # sed "s/username=ask/username=${RDP_USERNAME}/" /etc/xrdp/xrdp.ini > $TEMP_FILE
+  # mv $TEMP_FILE /etc/xrdp/xrdp.ini
+  # rm -f $TEMP_FILE
   # Start X virtual framebuffer
   # /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /usr/bin/x11vnc -forever -passwd nopass01 -create
   Xvfb :0 -screen 0 1280x1024x24 &
