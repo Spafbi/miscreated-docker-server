@@ -110,7 +110,7 @@ RUN mkdir -p /etc/xrdp && \
     echo "username=ask" >> /etc/xrdp/xrdp.ini && \
     echo "password=ask" >> /etc/xrdp/xrdp.ini && \
     echo "port=-1" >> /etc/xrdp/xrdp.ini && \
-    chown steam:steam -r /etc/xrdp && \
+    chown -R steam:steam /etc/xrdp && \
     chmod 775 /etc/xrdp/xrdp.ini && \
     chmod 664 /etc/xrdp/xrdp.ini
 
