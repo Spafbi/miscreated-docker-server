@@ -109,7 +109,6 @@ RUN mkdir -p /etc/xrdp && \
     echo "lib=libvnc.so" >> /etc/xrdp/xrdp.ini && \
     echo "username=ask" >> /etc/xrdp/xrdp.ini && \
     echo "password=ask" >> /etc/xrdp/xrdp.ini && \
-    echo "ip=127.0.0.1" >> /etc/xrdp/xrdp.ini && \
     echo "port=-1" >> /etc/xrdp/xrdp.ini && \
     chown steam:steam -r /etc/xrdp && \
     chmod 775 /etc/xrdp/xrdp.ini && \
