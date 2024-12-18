@@ -3,10 +3,11 @@ while true; do
   export WINEDLLOVERRIDES="mscoree,mshtml="
   export WINEARCH=win64
   export WINEPREFIX=/home/steam/.wine64
-  # Start X virtual framebuffer
   export XDG_RUNTIME_DIR=$(mktemp -d)
-  # /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /usr/bin/x11vnc -forever -passwd nopass01 -create
   export DISPLAY=:0
+  export XAUTHORITY=/home/steam/.Xauthority
+  # Start X virtual framebuffer
+  # /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /usr/bin/x11vnc -forever -passwd nopass01 -create
   Xvfb :0 -screen 0 1280x1024x24 &
   XVFB_PID=$!
   # Wait to ensure Xvfb is up
