@@ -1,0 +1,88 @@
+# Dockerfile to run Conan Exiles server using Wine on Ubuntu
+
+# Use the latest Ubuntu Server 22.04 as the base image
+FROM ubuntu:jammy
+ENV CODENAME=jammy
+
+# Set build arguments with default values
+ARG USER=steam
+ARG UID=1001
+ARG GID=1001
+
+# Set environment variables
+ENV LD_LIBRARY_PATH="/app"
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DISPLAY=:0
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    wget \
+    xvfb \
+    x11vnc \
+    xrdp \
+    playonlinux \
+    wine \
+    winbind \
+    cabextract \
+    p7zip-full \
+    unzip \
+    curl \
+    lib32gcc1 \
+    lib32stdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create steam user and group
+RUN groupadd -g $GID $USER && \
+    useradd -m -u $UID -g $GID $USER
+
+# Set up directories and permissions
+RUN mkdir -p /app && chown -R steam:steam /app && chmod -R 775 /app
+
+# Switch to steam user
+USER steam
+
+# This section is for configuring Wine overrides.
+# Wine overrides are necessary to ensure that specific Windows DLLs or libraries are used instead of the default ones provided by Wine.
+# This can help improve compatibility and stability for certain applications running in the Wine environment.
+# By specifying overrides, we can address issues related to application behavior, performance, or graphical rendering.
+# Wine Overrides
+ENV WINEDLLOVERRIDES="mscoree,mshtml="
+
+# Initialize the Wine environment and update it by running wineboot with the -u option
+# xvfb-run is used to run wineboot in a virtual X server environment, which is useful for applications that require a graphical interface
+RUN xvfb-run wineboot -u
+
+# Install SteamCMD
+RUN mkdir -p /home/$USER/steamcmd && \
+    cd /home/$USER/steamcmd && \
+    wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
+    tar -xvzf steamcmd_linux.tar.gz && \
+    rm steamcmd_linux.tar.gz
+
+# Install the game server
+RUN /home/$USER/steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
+
+# This Dockerfile exposes the necessary ports for the server to function correctly.
+# Typically, game servers require multiple ports for different types of communication.
+# For example:
+# - Port 3389/TCP: Console access using a remote desktop connection (RDP) client.
+# - Port 64090/UDP: Game server port for client connections.
+# - Port 64091/UDP: Game server port for Steam query
+# - Port 64092/UDP: Game server port for server info.
+# - Port 64093/UDP: Game server port for VoIP.
+# - Port 64094/TCP: Game server port for RCON.
+# Ensure that these ports are correctly mapped in your Docker run command or Docker Compose file.
+EXPOSE 3389/tcp 64090/udp 64091/udp 64092/udp 64093/udp 64094/tcp
+
+# Set the working directory to the server directory /app
+WORKDIR /app
+
+# Copy the entrypoint script into the container
+COPY image-scripts/start_server_testing2.sh /home/$USER/start_server.sh
+RUN chmod +x /home/$USER/start_server.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/home/$USER/start_server.sh"]
