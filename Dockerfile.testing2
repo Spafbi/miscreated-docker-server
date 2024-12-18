@@ -53,13 +53,9 @@ USER steam
 # Wine Overrides
 ENV WINEDLLOVERRIDES="mscoree,mshtml="
 
-# Set environment variables for Wine to use a 64-bit prefix
-ENV WINEARCH=win64
-ENV WINEPREFIX=/home/steam/.wine64
-
 # Initialize the Wine environment and update it by running wineboot with the -u option
 # xvfb-run is used to run wineboot in a virtual X server environment, which is useful for applications that require a graphical interface
-RUN xvfb-run wineboot -u
+RUN WINEARCH=win64 WINEPREFIX=/home/steam/.wine64 xvfb-run wineboot -u
 
 # Install SteamCMD
 RUN mkdir -p /home/steam/steamcmd && \
