@@ -54,7 +54,7 @@ USER steam
 # Wine Overrides
 ENV WINEDLLOVERRIDES="mscoree,mshtml="
 ENV WINEARCH=win64
-ENV WINEPREFIX=/home/steam/.wine64 
+ENV WINEPREFIX=/home/steam/.wine64
 
 # Initialize the Wine environment and update it by running wineboot with the -u option
 # xvfb-run is used to run wineboot in a virtual X server environment, which is useful for applications that require a graphical interface

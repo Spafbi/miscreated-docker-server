@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 while true; do
   export WINEDLLOVERRIDES="mscoree,mshtml="
   export WINEARCH=win64
@@ -31,3 +32,4 @@ while true; do
   rm -rf $XDG_RUNTIME_DIR
   sleep 10
 done
+set +x
