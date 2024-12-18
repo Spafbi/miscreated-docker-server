@@ -55,7 +55,9 @@ ENV WINEDLLOVERRIDES="mscoree,mshtml="
 
 # Initialize the Wine environment and update it by running wineboot with the -u option
 # xvfb-run is used to run wineboot in a virtual X server environment, which is useful for applications that require a graphical interface
+USER root
 RUN WINEARCH=win64 WINEPREFIX=/home/steam/.wine64 xvfb-run wine winecfg && xvfb-run wineboot -u
+USER steam
 
 # Install SteamCMD
 RUN mkdir -p /home/steam/steamcmd && \
