@@ -42,7 +42,7 @@ RUN groupadd -g $GID $USER && \
 RUN mkdir -p /app && chown -R steam:steam /app && chmod -R 775 /app
 
 # Switch to steam user
-USER steam
+USER $USER
 
 # This section is for configuring Wine overrides.
 # Wine overrides are necessary to ensure that specific Windows DLLs or libraries are used instead of the default ones provided by Wine.
@@ -81,8 +81,10 @@ EXPOSE 3389/tcp 64090/udp 64091/udp 64092/udp 64093/udp 64094/tcp
 WORKDIR /app
 
 # Copy the entrypoint script into the container
+USER root
 COPY image-scripts/start_server_testing2.sh /home/$USER/start_server.sh
 RUN chmod +x /home/$USER/start_server.sh
+USER $USER
 
 # Set the entrypoint
 ENTRYPOINT ["/home/$USER/start_server.sh"]
