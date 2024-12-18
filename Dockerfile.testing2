@@ -106,7 +106,7 @@ RUN mkdir -p /etc/xrdp && \
     echo "port=3389" >> /etc/xrdp/xrdp.ini && \
     echo "[xrdp1]" >> /etc/xrdp/xrdp.ini && \
     echo "name=Session1" >> /etc/xrdp/xrdp.ini && \
-    echo "lib=libvnc.so" >> /etc/xrdp/xrdp.ini && \
+    echo "lib=libxup.so" >> /etc/xrdp/xrdp.ini && \
     echo "username=ask" >> /etc/xrdp/xrdp.ini && \
     echo "password=ask" >> /etc/xrdp/xrdp.ini && \
     echo "port=-1" >> /etc/xrdp/xrdp.ini && \
