@@ -14,8 +14,8 @@ while true; do
   # Wait to ensure Xvfb is up
   sleep 5
   # Start XRDP
-  /etc/init.d/xrdp start
-  XRDP_PID=$!
+  sudo /etc/init.d/xrdp start
+  XRDP_PID=$(pgrep -f xrdp)
   # /etc/init.d/xrdp start
   # XRDP_PID=$!
   wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers 50 +map islands +http_startserver

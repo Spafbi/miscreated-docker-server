@@ -1,5 +1,4 @@
 # Dockerfile to run a Miscreated server using Wine on Ubuntu
-
 # Use the latest Ubuntu Server 22.04 as the base image
 FROM ubuntu:jammy
 ENV CODENAME=jammy
@@ -19,22 +18,23 @@ ENV DISPLAY=:0
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
     apt-get install -y \
-    software-properties-common \
-    wget \
-    xvfb \
-    x11vnc \
-    xrdp \
-    playonlinux \
-    wine \
-    wine32 \
-    wine64 \
-    winbind \
     cabextract \
-    p7zip-full \
-    unzip \
     curl \
     lib32gcc-s1 \
     lib32stdc++6 \
+    p7zip-full \
+    playonlinux \
+    software-properties-common \
+    sudo \
+    unzip \
+    wget \
+    winbind \
+    wine \
+    wine32 \
+    wine64 \
+    x11vnc \
+    xrdp \
+    xvfb \
     && rm -rf /var/lib/apt/lists/*
 
 # Create steam user and group
@@ -46,6 +46,9 @@ RUN mkdir -p /app && chown -R steam:steam /app && chmod -R 775 /app
 
 # Switch to steam user
 USER steam
+
+# Allow the steam user to start the xrdp service without a password
+RUN echo "steam ALL=(ALL) NOPASSWD: /etc/init.d/xrdp start" > /etc/sudoers.d/steam
 
 # This section is for configuring Wine overrides.
 # Wine overrides are necessary to ensure that specific Windows DLLs or libraries are used instead of the default ones provided by Wine.
