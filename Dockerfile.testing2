@@ -16,7 +16,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:0
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y \
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install -y \
     software-properties-common \
     wget \
     xvfb \
@@ -24,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     xrdp \
     playonlinux \
     wine \
+    wine32 \
     winbind \
     cabextract \
     p7zip-full \
