@@ -102,10 +102,10 @@ RUN mkdir -p /tmp/.X11-unix && \
 # Create /etc/xrdp/xrdp.ini file with the required entries
 RUN mkdir -p /etc/xrdp && \
     echo "[xrdp1]" > /etc/xrdp/xrdp.ini && \
-    echo "name=Active Local Login" >> /etc/xrdp/xrdp.ini && \
+    echo "name=sesman-Xvnc" >> /etc/xrdp/xrdp.ini && \
     echo "lib=libvnc.so" >> /etc/xrdp/xrdp.ini && \
     echo "username=" >> /etc/xrdp/xrdp.ini && \
-    echo "password=ask" >> /etc/xrdp/xrdp.ini && \
+    echo "password=nopass01" >> /etc/xrdp/xrdp.ini && \
     echo "ip=127.0.0.1" >> /etc/xrdp/xrdp.ini && \
     echo "port=3389" >> /etc/xrdp/xrdp.ini && \
     chown -R steam:steam /etc/xrdp && \
