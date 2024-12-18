@@ -1,6 +1,8 @@
 #!/bin/bash
 while true; do
   export WINEDLLOVERRIDES="mscoree,mshtml="
+  export WINEARCH=win64
+  export WINEPREFIX=/home/steam/.wine64
   # Start X virtual framebuffer
   export XDG_RUNTIME_DIR=$(mktemp -d)
   Xvfb :0 -screen 0 1280x1024x16 &
