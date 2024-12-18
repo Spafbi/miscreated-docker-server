@@ -89,6 +89,12 @@ WORKDIR /app
 USER root
 COPY image-scripts/start_server_testing2.sh /home/steam/start_server.sh
 RUN chmod +x /home/steam/start_server.sh
+
+# Create the /tmp/.X11-unix directory and set permissions
+RUN mkdir -p /tmp/.X11-unix && \
+    chown root:root /tmp/.X11-unix && \
+    chmod 1777 /tmp/.X11-unix
+
 USER steam
 
 # Set the entrypoint
