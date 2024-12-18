@@ -5,7 +5,6 @@ FROM ubuntu:jammy
 ENV CODENAME=jammy
 
 # Set build arguments with default values
-ARG USER=steam
 ARG UID=1001
 ARG GID=1001
 
@@ -35,14 +34,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create steam user and group
-RUN groupadd -g $GID $USER && \
-    useradd -m -u $UID -g $GID $USER
+RUN groupadd -g $GID steam && \
+    useradd -m -u $UID -g $GID steam
 
 # Set up directories and permissions
 RUN mkdir -p /app && chown -R steam:steam /app && chmod -R 775 /app
 
 # Switch to steam user
-USER $USER
+USER steam
 
 # This section is for configuring Wine overrides.
 # Wine overrides are necessary to ensure that specific Windows DLLs or libraries are used instead of the default ones provided by Wine.
@@ -56,14 +55,14 @@ ENV WINEDLLOVERRIDES="mscoree,mshtml="
 RUN xvfb-run wineboot -u
 
 # Install SteamCMD
-RUN mkdir -p /home/$USER/steamcmd && \
-    cd /home/$USER/steamcmd && \
+RUN mkdir -p /home/steam/steamcmd && \
+    cd /home/steam/steamcmd && \
     wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
     tar -xvzf steamcmd_linux.tar.gz && \
     rm steamcmd_linux.tar.gz
 
 # Install the game server
-RUN /home/$USER/steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
+RUN /home/steam/steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir /app +app_update 302200 validate +quit
 
 # This Dockerfile exposes the necessary ports for the server to function correctly.
 # Typically, game servers require multiple ports for different types of communication.
@@ -82,9 +81,9 @@ WORKDIR /app
 
 # Copy the entrypoint script into the container
 USER root
-COPY image-scripts/start_server_testing2.sh /home/$USER/start_server.sh
-RUN chmod +x /home/$USER/start_server.sh
-USER $USER
+COPY image-scripts/start_server_testing2.sh /home/steam/start_server.sh
+RUN chmod +x /home/steam/start_server.sh
+USER steam
 
 # Set the entrypoint
-ENTRYPOINT ["/home/$USER/start_server.sh"]
+ENTRYPOINT ["/home/steam/start_server.sh"]
