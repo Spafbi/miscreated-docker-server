@@ -44,11 +44,12 @@ RUN groupadd -g $GID steam && \
 # Set up directories and permissions
 RUN mkdir -p /app && chown -R steam:steam /app && chmod -R 775 /app
 
+# Allow the steam user to start the xrdp service without a password
+RUN mkdir -p /etc/sudoers.d && \
+    echo "steam ALL=(ALL) NOPASSWD: /etc/init.d/xrdp start" | sudo tee /etc/sudoers.d/steam
+
 # Switch to steam user
 USER steam
-
-# Allow the steam user to start the xrdp service without a password
-RUN echo "steam ALL=(ALL) NOPASSWD: /etc/init.d/xrdp start" > /etc/sudoers.d/steam
 
 # This section is for configuring Wine overrides.
 # Wine overrides are necessary to ensure that specific Windows DLLs or libraries are used instead of the default ones provided by Wine.
