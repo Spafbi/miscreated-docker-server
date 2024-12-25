@@ -73,7 +73,7 @@ RUN mkdir -p /tmp/.X11-unix && \
     chmod 1777 /tmp/.X11-unix
 
 # Copy the entrypoint script into the container
-COPY image-scripts/start_server_testing.sh /start_server.sh
+COPY files/start_server_testing.sh /start_server.sh
 RUN chmod +x /start_server.sh
 
 # Set the working directory to the server directory /app

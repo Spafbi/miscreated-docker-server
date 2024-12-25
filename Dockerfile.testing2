@@ -89,30 +89,28 @@ EXPOSE 3389/tcp 64090/udp 64091/udp 64092/udp 64093/udp 64094/tcp
 # Set the working directory to the server directory /app
 WORKDIR /app
 
-# Copy the entrypoint script into the container
+# Set the user back to root
 USER root
-COPY image-scripts/start_server_testing2.sh /home/steam/start_server.sh
-RUN chmod +x /home/steam/start_server.sh
 
-# Create the /tmp/.X11-unix directory and set permissions
-RUN mkdir -p /tmp/.X11-unix && \
-    chown root:root /tmp/.X11-unix && \
-    chmod 1777 /tmp/.X11-unix
+# Create the /tmp/.X11-unix and /etc/xrdp directories and set permissions
+RUN mkdir -p /tmp/.X11-unix /etc/xrdp && \
+    chown root:root /tmp/.X11-unix /etc/xrdp && \
+    chmod 1777 /tmp/.X11-unix && \
+    chmod 775 /etc/xrdp
 
-# Create /etc/xrdp/xrdp.ini file with the required entries
-RUN mkdir -p /etc/xrdp && \
-    echo "[xrdp1]" > /etc/xrdp/xrdp.ini && \
-    echo "name=sesman-Xvnc" >> /etc/xrdp/xrdp.ini && \
-    echo "lib=libvnc.so" >> /etc/xrdp/xrdp.ini && \
-    echo "username=" >> /etc/xrdp/xrdp.ini && \
-    echo "password=nopass01" >> /etc/xrdp/xrdp.ini && \
-    echo "ip=127.0.0.1" >> /etc/xrdp/xrdp.ini && \
-    echo "port=3389" >> /etc/xrdp/xrdp.ini && \
+# Copy the entrypoint script into the container
+COPY files/start_server_testing2.sh /home/steam/start_server.sh
+
+# Copy the xrdp.ini file into the container
+COPY files/xrdp.ini /etc/xrdp/xrdp.ini
+
+# Set the permissions for the entrypoint script and xrdp file
+RUN chmod 664 /etc/xrdp/xrdp.ini && \
     chown -R steam:steam /etc/xrdp && \
-    chmod 775 /etc/xrdp/xrdp.ini && \
-    chmod 664 /etc/xrdp/xrdp.ini
+    chmod +x /home/steam/start_server.sh
 
-USER steam
+# Switch back to the steam user
+    USER steam
 
 # Set the entrypoint
 ENTRYPOINT ["/home/steam/start_server.sh"]

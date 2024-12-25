@@ -66,7 +66,7 @@ RUN /usr/games/steamcmd +@sSteamCmdForcePlatformType windows +login anonymous +f
 USER root
 
 # Copy the entrypoint script into the container
-COPY image-scripts/start_server.sh /start_server.sh
+COPY files/start_server.sh /start_server.sh
 RUN chmod +x /start_server.sh
 
 # Set the working directory to the server directory /app
