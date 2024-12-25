@@ -5,7 +5,6 @@ while true; do
   export WINEARCH=win64
   export WINEPREFIX=/home/steam/.wine64
   export XDG_RUNTIME_DIR=$(mktemp -d)
-  export DISPLAY=:0
   export XAUTHORITY=/home/steam/.Xauthority
   export RDP_PASSWORD=${RDP_PASSWORD:-nopass01}
   # export RDP_USERNAME=${RDP_USERNAME:-steam}
@@ -30,6 +29,7 @@ while true; do
   XRDP_PID=$(pgrep -f xrdp)
   # /etc/init.d/xrdp start
   # XRDP_PID=$!
+  export DISPLAY=:0
   wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers 50 +map islands +http_startserver
   WINE_PID=$!
   while [ ! -f /app/server.log ]; do
