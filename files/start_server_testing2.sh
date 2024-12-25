@@ -22,6 +22,7 @@ while true; do
   # /usr/bin/xvfb-run --server-args="-screen 0 1280x1024x24" /usr/bin/x11vnc -forever -passwd nopass01 -create
   Xvfb :0 -screen 0 1280x1024x24 &
   XVFB_PID=$!
+  export DISPLAY=:0
   # Wait to ensure Xvfb is up
   sleep 5
   # Start XRDP
@@ -32,7 +33,6 @@ while true; do
   XRDP_PID=$(pgrep -f xrdp)
   # /etc/init.d/xrdp start
   # XRDP_PID=$!
-  export DISPLAY=:0
   wine Bin64_dedicated/MiscreatedServer.exe +sv_maxplayers 50 +map islands +http_startserver
   WINE_PID=$!
   while [ ! -f /app/server.log ]; do
