@@ -46,7 +46,9 @@ RUN mkdir -p /app && chown -R steam:steam /app && chmod -R 775 /app
 
 # Allow the steam user to start the xrdp service without a password
 RUN mkdir -p /etc/sudoers.d && \
-    echo "steam ALL=(ALL) NOPASSWD: /etc/init.d/xrdp start" | sudo tee /etc/sudoers.d/steam
+    echo "steam ALL=(ALL) NOPASSWD: /etc/init.d/xrdp start" | sudo tee -a /etc/sudoers.d/steam && \
+    echo "steam ALL=(ALL) NOPASSWD: /usr/sbin/xrdp" | sudo tee -a /etc/sudoers.d/steam && \
+    echo "steam ALL=(ALL) NOPASSWD: /usr/sbin/xrdp-sesman" | sudo tee -a /etc/sudoers.d/steam
 
 # Switch to steam user
 USER steam
@@ -109,10 +111,10 @@ RUN chmod 664 /etc/xrdp/xrdp.ini && \
     chown -R steam:steam /etc/xrdp && \
     chmod +x /home/steam/start_server.sh
 
-RUN setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp && \
-    setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp-sesman && \
-    mkdir -p /var/log/xrdp /var/log/xrdp-sesman && \
-    chown steam: /var/log/xrdp /var/log/xrdp-sesman
+# RUN setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp && \
+#     setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp-sesman && \
+#     mkdir -p /var/log/xrdp /var/log/xrdp-sesman && \
+#     chown steam: /var/log/xrdp /var/log/xrdp-sesman
 
 # Switch back to the steam user
     USER steam

@@ -27,9 +27,9 @@ while true; do
   sleep 5
   # Start XRDP
   #sudo /etc/init.d/xrdp start
-  /usr/sbin/xrdp-sesman &
+  sudo /usr/sbin/xrdp-sesman &
   XRDP_SESMAN_PID=$(pgrep -f xrdp-sesman)
-  /usr/sbin/xrdp &
+  sudo /usr/sbin/xrdp &
   XRDP_PID=$(pgrep -f xrdp)
   # /etc/init.d/xrdp start
   # XRDP_PID=$!
