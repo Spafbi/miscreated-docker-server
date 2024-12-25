@@ -25,7 +25,10 @@ while true; do
   # Wait to ensure Xvfb is up
   sleep 5
   # Start XRDP
-  sudo /etc/init.d/xrdp start
+  #sudo /etc/init.d/xrdp start
+  /usr/sbin/xrdp-sesman &
+  XRDP_SESMAN_PID=$(pgrep -f xrdp-sesman)
+  /usr/sbin/xrdp &
   XRDP_PID=$(pgrep -f xrdp)
   # /etc/init.d/xrdp start
   # XRDP_PID=$!
