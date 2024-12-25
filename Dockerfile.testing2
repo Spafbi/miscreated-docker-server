@@ -110,7 +110,9 @@ RUN chmod 664 /etc/xrdp/xrdp.ini && \
     chmod +x /home/steam/start_server.sh
 
 RUN setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp && \
-    setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp-sesman
+    setcap 'cap_net_bind_service=+ep' /usr/sbin/xrdp-sesman && \
+    mkdir -p /var/log/xrdp /var/log/xrdp-sesman && \
+    chown steam: /var/log/xrdp /var/log/xrdp-sesman
 
 # Switch back to the steam user
     USER steam
