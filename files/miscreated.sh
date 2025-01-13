@@ -9,7 +9,7 @@ if [[ "${WHITELISTED,,}" =~ ^(1|y|t|true)$ ]]; then
 fi
 XAUTH=$(mktemp)
 XDUMP=~/.miscreated-xdump
-export WINEPREFIX="${HOME}/.wine"
+export WINEPREFIX="/app/.wine"
 export WINEDLLOVERRIDES="mscoree,mshtml="
 umask=002
 # Start the server
