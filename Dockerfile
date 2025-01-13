@@ -13,13 +13,11 @@ ENV UBUNTU_CODENAME=jammy
 
 RUN dpkg --add-architecture i386 && \
     apt update && \
-    apt install -y wget
-
-RUN mkdir -pm755 /etc/apt/keyrings && \
+    apt install -y wget && \
+    mkdir -pm755 /etc/apt/keyrings && \
     wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
-    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${UBUNTU_CODENAME}/winehq-${UBUNTU_CODENAME}.sources
-
-RUN apt update && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${UBUNTU_CODENAME}/winehq-${UBUNTU_CODENAME}.sources && \
+    apt update && \
     ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
     export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y --no-install-recommends tzdata && \
@@ -32,10 +30,9 @@ RUN apt update && \
     apt upgrade -y && \
     apt autoremove -y && \
     if ! getent group $GID; then groupadd -g $GID $USER; fi && \
-    if ! id -u $UID >/dev/null 2>&1; then useradd -m -u $UID -g $GID -s /bin/bash $USER; fi
-
-# Create server install directory and set ownership and permissions
-RUN mkdir -p /app && \
+    if ! id -u $UID >/dev/null 2>&1; then useradd -m -u $UID -g $GID -s /bin/bash $USER; fi && \
+    echo "Creating server install directory and set ownership and permissions" && \
+    mkdir -p /app && \
     chown -R $UID:$GID /app && \
     chmod -R 775 /app
 
