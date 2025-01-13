@@ -1,15 +1,15 @@
+# Use Ubuntu Server as the base image
+FROM ubuntu:jammy
+
 # Dockerfile to run a Miscreated server using Wine on Ubuntu
 # Set build arguments with default values
 ARG USER=steam
 ARG UID=1001
 ARG GID=1001
-ARG UBUNTU_CODENAME=jammy
-
-# Use Ubuntu Server as the base image
-FROM ubuntu:${UBUNTU_CODENAME}
 
 # Set environment variables
 ENV LD_LIBRARY_PATH="/app"
+ENV UBUNTU_CODENAME=jammy
 
 RUN dpkg --add-architecture i386 && \
     apt update && \
