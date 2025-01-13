@@ -42,9 +42,7 @@ WORKDIR /app
 # Set the user to steam ($USER)
 USER $USER
 
-# Copy the run-server.sh script to the /app directory
-COPY files/miscreated.sh /app/
-
+# Install Miscreated
 RUN mkdir -p ~/.steam 2>/dev/null && \
     XAUTH=$(mktemp) && \
     XDUMP=~/.miscreated-xdump && \
@@ -52,6 +50,10 @@ RUN mkdir -p ~/.steam 2>/dev/null && \
     export WINEDLLOVERRIDES="mscoree,mshtml=" && \
     WINEDEBUG=-fixme-all xvfb-run -e ${XDUMP} -f ${XAUTH} -a wineboot -u && \
     /usr/games/steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "/app" +login anonymous +app_update 302200 validate +quit
+
+# Copy the run-server.sh script to the /app directory
+COPY files/miscreated.sh /app/
+RUN chmod +x /app/miscreated.sh
 
 # Expose the necessary UDP and TCP ports
 EXPOSE 64090-64093/udp
