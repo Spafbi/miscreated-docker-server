@@ -12,6 +12,8 @@ FROM ubuntu:${UBUNTU_CODENAME}
 ENV LD_LIBRARY_PATH="/app"
 
 RUN dpkg --add-architecture i386 && \
+    apt update && \
+    apt install -y wget && \
     mkdir -pm755 /etc/apt/keyrings && \
     wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
     wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/${UBUNTU_CODENAME}/winehq-${UBUNTU_CODENAME}.sources && \
