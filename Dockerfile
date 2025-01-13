@@ -49,7 +49,7 @@ RUN mkdir -p ~/.steam 2>/dev/null && \
     XDUMP=~/.miscreated-xdump && \
     export WINEPREFIX="~/.wine" && \
     export WINEDLLOVERRIDES="mscoree,mshtml=" && \
-    WINEDEBUG=-fixme-all xvfb-run -e ${XDUMP} -f ${XAUTH} -a wineboot -u
+    WINEDEBUG=-fixme-all xvfb-run -e ${XDUMP} -f ${XAUTH} -a wineboot -u && \
     /usr/games/steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "/app" +login anonymous +app_update 302200 validate +quit
 
 # Expose the necessary UDP and TCP ports
