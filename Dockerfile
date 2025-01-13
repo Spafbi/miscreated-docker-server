@@ -53,7 +53,13 @@ RUN mkdir -p ~/.steam 2>/dev/null && \
 
 # Copy the run-server.sh script to the /app directory
 COPY files/miscreated.sh /app/
+
+# Set the user to steam ($USER)
+USER root
 RUN chmod +x /app/miscreated.sh
+
+# Set the user to steam ($USER)
+USER $USER
 
 # Expose the necessary UDP and TCP ports
 EXPOSE 64090-64093/udp
